@@ -1,25 +1,19 @@
-import logo from './logo.svg';
+import { Row, Col } from 'antd';
 import './App.css';
+import RTE from './RTE';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Row style={{ marginTop: '6rem' }}>
+        <Col span={8}></Col>
+        <Col span={8}>
+          <RTE />
+        </Col>
+        <Col span={8}></Col>
+      </Row>
+    </>
   );
-}
+};
 
 export default App;
