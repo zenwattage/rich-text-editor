@@ -4,17 +4,20 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { createEditor, Transforms, Editor, Text } from 'slate';
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react';
+import { withHistory } from 'slate-history';
 import {
   BoldOutlined,
   ItalicOutlined,
   UnderlineOutlined,
   HighlightOutlined,
   StrikethroughOutlined,
+  UndoOutlined,
+  RedoOutlined
 } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 
 const RTE = () => {
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   // Add the initial value when setting up our state.
   const [value, setValue] = useState([
     {
@@ -31,6 +34,7 @@ const RTE = () => {
       ],
     },
   ]);
+
 
   // Define a rendering function based on the element passed to `props`. We use
   // `useCallback` here to memoize the function for subsequent renders.
@@ -60,6 +64,31 @@ const RTE = () => {
           }}
         />
       </Tooltip>
+
+
+      <Tooltip title="Undo">
+        <Button
+          icon={<UndoOutlined />}
+          onMouseDown={(event) => {
+            event.preventDefault();
+
+          }}
+        />
+      </Tooltip>
+      <Tooltip title="Redo">
+        <Button
+          icon={<RedoOutlined />}
+          onMouseDown={(event) => {
+            event.preventDefault();
+            editor.history = {
+              redos: []
+            }
+            //CustomEditor.toggleUnderlineMark(editor);
+          }}
+        />
+      </Tooltip>
+
+
       <Tooltip title="Italicize">
         <Button
           danger={CustomEditor.isItalicMarkActive(editor)}
@@ -274,6 +303,13 @@ const CustomEditor = {
       { match: (n) => Text.isText(n), split: true }
     );
   },
+
+  // toggleUndo(editor) {
+  //   Transforms.setNodes(
+  //     editor,
+  //     { type: 'undo', highlight: isActive ? null : true },
+  //   )
+  // },
 
   toggleStrikethroughMark(editor) {
     const isActive = CustomEditor.isStrikethroughActive(editor);
